@@ -1,4 +1,100 @@
 // src/components/SearchResults.jsx
+// // src/components/SearchResults.jsx
+// import React, { useMemo } from "react";
+// import { useLocation, Link } from "react-router-dom";
+// import "./search-results.css";
+
+// function useQuery() {
+//   return new URLSearchParams(useLocation().search);
+// }
+
+// export default function SearchResults() {
+//   const query = useQuery().get("q") || "";
+//   const searchTerm = query.trim() || "Item";
+
+//   // ✅ List of possible Unsplash categories for random variety
+//   const categories = [
+//     "camera",
+//     "laptop",
+//     "bicycle",
+//     "tent",
+//     "projector",
+//     "chair",
+//     "speaker",
+//     "tools",
+//     "car",
+//     "drone",
+//     "phone",
+//     "furniture",
+//     "kitchen",
+//     "sports",
+//     "watch",
+//     "guitar",
+//     "bag",
+//     "fashion",
+//     "electronics",
+//     "appliance",
+//   ];
+
+//   // ✅ Function to get unique image URLs (Unsplash source always random)
+//   const getImageUrl = (term, i) => {
+//     const randomCategory = categories[i % categories.length];
+//     // use both search term and index to ensure unique results
+//     return `https://source.unsplash.com/400x300/?${encodeURIComponent(
+//       term || randomCategory
+//     )}&sig=${i}`;
+//   };
+
+//   // ✅ Generate 10 listings with guaranteed images
+//   const listings = useMemo(() => {
+//     return Array.from({ length: 10 }).map((_, i) => ({
+//       id: `${searchTerm.toLowerCase().replace(/\s+/g, "-")}-${i + 1}`,
+//       title: `${searchTerm} — Model ${i + 1}`,
+//       description: `High-quality ${searchTerm.toLowerCase()} for rent. Reliable, affordable, and available near you.`,
+//       image: getImageUrl(searchTerm, i),
+//     }));
+//   }, [searchTerm]);
+
+//   return (
+//     <main className="sr-root">
+//       <h1 className="sr-heading">Search results for “{searchTerm}”</h1>
+//       <div className="sr-grid">
+//         {listings.map((item) => (
+//           <div className="sr-card" key={item.id}>
+//             <img
+//               src={item.image}
+//               alt={item.title}
+//               className="sr-img"
+//               loading="lazy"
+//             />
+//             <h2 className="sr-title">{item.title}</h2>
+//             <p className="sr-desc">{item.description}</p>
+//             <Link
+//               to={`/item/${encodeURIComponent(item.id)}`}
+//               className="sr-rent-btn"
+//               state={{ image: item.image }}
+//             >
+//               Rent it
+//             </Link>
+//           </div>
+//         ))}
+//       </div>
+//     </main>
+//   );
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
 import React from "react";
 import { useLocation, Link } from "react-router-dom";
 import "./search-results.css";

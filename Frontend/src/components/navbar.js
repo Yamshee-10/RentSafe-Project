@@ -32,8 +32,14 @@ const Navbar = (props) => {
 
 
             {/* <span className="thq-link thq-body-small">{props.link3}</span> */}
-            <span className="thq-link thq-body-small">{props.link4}</span>
-            <span className="thq-link thq-body-small">{props.link5}</span>
+
+            <Link to="/AboutUs" className="thq-link thq-body-small">{props.link4}</Link>
+
+            <Link to="/contact" className="thq-link thq-body-small">{props.link5}</Link>
+            
+           {/* <span className="thq-link thq-body-small">{props.link4}</span>
+
+            <span className="thq-link thq-body-small">{props.link5}</span> */}
           </nav>
           <div className="navbar-buttons1">
             <button className="navbar-action11 thq-button-filled thq-button-animated">
@@ -76,8 +82,12 @@ const Navbar = (props) => {
               </Link>
 
               {/* <span className="thq-link thq-body-small">{props.link3}</span> */}
-              <span className="thq-link thq-body-small">{props.link4}</span>
-              <span className="thq-link thq-body-small">{props.link5}</span>
+
+              <Link to="/AboutUs" className="thq-link thq-body-small">{props.link4}</Link>
+              <Link to="/contact" className="thq-link thq-body-small">{props.link5}</Link>
+
+              {/* <span className="thq-link thq-body-small">{props.link4}</span>
+              <span className="thq-link thq-body-small">{props.link5}</span> */}
             </nav>
           </div>
           <div className="navbar-buttons2">

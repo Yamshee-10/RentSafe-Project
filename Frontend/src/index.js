@@ -13,7 +13,10 @@ import NotFound from './views/not-found'
 import HowItWorks from './components/how-it-works'
 import BrowseItems from './components/browse'
 import SearchResults from './components/SearchResults'
-import ItemDetail from './components/item-details';
+import ItemDetail from './components/item-details'
+import About from './components/AboutUs'
+import Contact from './components/contact'
+
 
 
 
@@ -29,6 +32,8 @@ const App = () => {
         <Route exact path="/browse-items" component={BrowseItems} />
         <Route exact path="/search" component={SearchResults} />
         <Route exact path="/item/:id" component={ItemDetail} />
+        <Route exact path="/AboutUs" component={About} />
+        <Route path="/contact" component={Contact} />
         <Route exact path="/not-found" component={NotFound} />
         <Route path="*" component={NotFound} />
         <Redirect to="/not-found" />

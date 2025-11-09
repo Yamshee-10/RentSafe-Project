@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 
 import './footer.css'
 
+
 const Footer = (props) => {
   return (
     <footer className="footer-footer1 thq-section-padding">

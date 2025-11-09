@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from "react-router-dom";
 
 import PropTypes from 'prop-types'
 
@@ -60,7 +61,12 @@ const Contact = (props) => {
           </div>
         </div>
       </div>
+      <br></br>
+      <Link to="/" className="about-cta">
+            Back to Home
+      </Link>
     </div>
+
   )
 }
 
