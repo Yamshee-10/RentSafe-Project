@@ -2,11 +2,18 @@ import React from 'react'
 
 import Script from 'dangerous-html/react'
 import PropTypes from 'prop-types'
+import { useState } from "react"
+import LenderDialog from "./LenderDialog";
+
 
 import './hero.css'
 
 const Hero = (props) => {
+    const [openDialog, setOpenDialog] = useState(false);
+
   return (
+   
+
     <div className="hero-header78">
       <div className="hero-column thq-section-max-width thq-section-padding">
         <div className="hero-content1">
@@ -17,9 +24,18 @@ const Hero = (props) => {
           <button className="thq-button-filled hero-button1">
             <span className="thq-body-small">{props.action1}</span>
           </button>
-          <button className="thq-button-outline hero-button2">
+
+          <button
+            className="thq-button-outline hero-button2"
+            onClick={() => setOpenDialog(true)}
+          >
             <span className="thq-body-small">{props.action2}</span>
           </button>
+
+
+          {/* <button className="thq-button-outline hero-button2">
+            <span className="thq-body-small">{props.action2}</span>
+          </button> */}
         </div>
       </div>
       <div className="hero-content2">
@@ -182,6 +198,8 @@ const Hero = (props) => {
           ></Script>
         </div>
       </div>
+      <LenderDialog open={openDialog} onClose={() => setOpenDialog(false)} />
+
     </div>
   )
 }
@@ -211,8 +229,8 @@ Hero.defaultProps = {
   image9Alt: 'Hero Image',
   image7Alt: 'Hero Image',
   heading1: 'Welcome to RentSafe',
-  action2: 'Secondary action',
-  action1: 'Main action',
+  action2: 'Become a Lender',
+  action1: 'Become a Borrower',
   image2Src:
     'https://images.unsplash.com/photo-1711701486568-fea4470cca98?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MTMyMXwwfDF8cmFuZG9tfHx8fHx8fHx8MTc1MTc2Nzg4OXw&ixlib=rb-4.1.0&q=80&w=1080',
   image4Alt: 'Hero Image',
