@@ -16,6 +16,7 @@ const SAMPLE_ITEMS = [
   "Kayak",
   "Camera",
   "DSLR Camera",
+  "Hammer",
   "Mirrorless Camera",
   "Lens 50mm",
   "Projector",

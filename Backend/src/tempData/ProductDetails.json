@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1763886702473,
+    "productName": "hammer",
+    "priceRange": "100",
+    "minRentalPeriod": "5",
+    "description": "good",
+    "imageUrl": "/uploads/1763886702466.png"
+  },
+  {
+    "id": 1763890241993,
+    "productName": "hammer",
+    "priceRange": "100",
+    "minRentalPeriod": "5",
+    "description": "good",
+    "imageUrl": "/uploads/1763890241989.png"
+  },
+  {
+    "id": 1763890296051,
+    "productName": "Camera",
+    "priceRange": "150",
+    "minRentalPeriod": "8",
+    "description": "Great ",
+    "imageUrl": "/uploads/1763890296047.png"
+  },
+  {
+    "id": 1763891623555,
+    "productName": "Drill",
+    "priceRange": "200",
+    "minRentalPeriod": "8",
+    "description": "Fine working Drill",
+    "imageUrl": "/uploads/1763891623552.png"
+  },
+  {
+    "id": 1763911080135,
+    "productName": "Drill",
+    "priceRange": "200",
+    "minRentalPeriod": "8",
+    "description": "great",
+    "imageUrl": "/uploads/1763911080116.png"
+  },
+  {
+    "id": 1763966616819,
+    "productName": "Camera",
+    "priceRange": "500",
+    "minRentalPeriod": "4",
+    "description": "Sony Camera",
+    "imageUrl": "/uploads/1763966616799.png"
+  },
+  {
+    "id": 1764273768205,
+    "productName": "Camera",
+    "priceRange": "500",
+    "minRentalPeriod": "4",
+    "description": "good",
+    "imageUrl": "/uploads/1764273768190.png"
+  }
+]

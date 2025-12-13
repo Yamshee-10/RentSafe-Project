@@ -1,0 +1,103 @@
+/* src/components/SignupDialog.css */
+.signup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 20px;
+}
+
+.signup-dialog {
+  width: 940px;
+  max-width: 98%;
+  background: #fff;
+  border-radius: 12px;
+  padding: 26px;
+  box-shadow: 0 18px 50px rgba(0,0,0,0.18);
+  position: relative;
+  font-family: "Poppins", sans-serif;
+}
+
+.signup-close {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: #666;
+}
+
+.signup-title {
+  text-align: center;
+  font-size: 22px;
+  margin-bottom: 10px;
+  color: #111;
+}
+
+.signup-form input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #e6e6e6;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.signup-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.signup-row-col {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.signup-sub {
+  font-weight: 600;
+  margin: 10px 0 6px;
+  color: #333;
+}
+
+.signup-actions {
+  display:flex;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.signup-primary {
+  background: #ef3b5a; /* rentSafe pink */
+  color: white;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  flex: 1;
+}
+
+.signup-secondary {
+  background: transparent;
+  border: 2px solid #ef3b5a;
+  color: #ef3b5a;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  flex: 1;
+}
+
+/* responsiveness */
+@media (max-width: 760px) {
+  .signup-row, .signup-row-col { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,65 @@
+[
+  {
+    "id": 1765052458050,
+    "name": "xyz",
+    "mobile": "1235",
+    "email": "xyz244@mailcom",
+    "gender": "male",
+    "age": "19",
+    "address": {
+      "house": "102",
+      "street": "turtlestreet",
+      "locality": "underrock",
+      "landmark": "red road",
+      "pincode": "547",
+      "city": "abx",
+      "state": "abc",
+      "country": "abd"
+    },
+    "aadhar": "4545",
+    "passwordHash": "$2b$10$0Spg5WVRKpvyizRFzWIdX.pLFj0DaBFXPD42Xgs09sjlNDXhFJKa.",
+    "createdAt": "2025-12-06T20:20:58.050Z"
+  },
+  {
+    "id": 1765206787863,
+    "name": "sonam",
+    "mobile": "123578",
+    "email": "xyz284@mailcom",
+    "gender": "male",
+    "age": "19",
+    "address": {
+      "house": "102",
+      "street": "turtlestreet",
+      "locality": "underrock",
+      "landmark": "red road",
+      "pincode": "789",
+      "city": "abx",
+      "state": "abc",
+      "country": "abd"
+    },
+    "aadhar": "548894",
+    "passwordHash": "$2b$10$Z9H8J9i/0ziLmUuBQvjMRuxSEbluSy3p8nqBVUzjsR.YXvdi5zhye",
+    "createdAt": "2025-12-08T15:13:07.863Z"
+  },
+  {
+    "id": 1765207102449,
+    "name": "hitesh",
+    "mobile": "1244",
+    "email": "xyz214@mailcom",
+    "gender": "male",
+    "age": "19",
+    "address": {
+      "house": "102",
+      "street": "turtlestreet",
+      "locality": "underrock",
+      "landmark": "red road",
+      "pincode": "789",
+      "city": "abx",
+      "state": "abc",
+      "country": "abd"
+    },
+    "aadhar": "548894",
+    "passwordHash": "$2b$10$d5PQIjXfSGK5pUwY//FEaulPpuBxLXKBxY7b48NqoawFLkMvOq1qy",
+    "createdAt": "2025-12-08T15:18:22.449Z"
+  }
+]
