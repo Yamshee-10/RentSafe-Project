@@ -4,9 +4,11 @@ import PropTypes from "prop-types";
 import "./navbar.css";
 import { Link } from "react-router-dom";
 import SignupDialog from "./SignupDialog";
+import Login from "./Login";
 
 const Navbar = (props) => {
   const [signupOpen, setSignupOpen] = useState(false);
+  const [loginOpen, setLoginOpen] = useState(false);
 
   return (
     <>
@@ -42,9 +44,17 @@ const Navbar = (props) => {
             </nav>
 
             <div className="navbar-buttons1">
-              <button className="navbar-action11 thq-button-filled thq-button-animated">
-                <span className="thq-body-small">Login</span>
+              <button
+                 onClick={() => setLoginOpen(true)}
+                 className="navbar-action11 thq-button-filled thq-button-animated"
+              >
+              <span className="thq-body-small">Login</span>
               </button>
+
+
+              {/* <button className="navbar-action11 thq-button-filled thq-button-animated">
+                <span className="thq-body-small">Login</span>
+              </button> */}
 
               {/* 🔥 Signup Button */}
               <button
@@ -60,6 +70,8 @@ const Navbar = (props) => {
 
       {/* ✅ Always include the dialog */}
       <SignupDialog open={signupOpen} onClose={() => setSignupOpen(false)} />
+      <Login open={loginOpen} onClose={() => setLoginOpen(false)} />
+
     </>
   );
 };
