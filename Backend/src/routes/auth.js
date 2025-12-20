@@ -31,6 +31,46 @@ router.post("/register", async (req, res) => {
       password,
     } = req.body;
 
+    // POST /api/auth/login
+router.post("/login", async (req, res) => {
+  try {
+    const { identifier, password } = req.body;
+    if (!identifier || !password) {
+      return res.status(400).json({ message: "Identifier and password required" });
+    }
+
+    ensureFile();
+    const raw = fs.readFileSync(jsonPath, "utf-8");
+    const users = raw ? JSON.parse(raw) : [];
+
+    const user = users.find(
+      u => u.email === identifier || u.mobile === identifier
+    );
+
+    if (!user) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.passwordHash);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    // Do NOT send password hash
+    const safeUser = { ...user };
+    delete safeUser.passwordHash;
+
+    res.json({
+      message: "Login successful",
+      user: safeUser
+    });
+
+  } catch (err) {
+    console.error("Login error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
     // basic validation
     if (!name || !mobile || !email || !password) {
       return res.status(400).json({ message: "name, mobile, email, password are required" });

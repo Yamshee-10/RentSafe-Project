@@ -61,5 +61,68 @@
     "aadhar": "548894",
     "passwordHash": "$2b$10$d5PQIjXfSGK5pUwY//FEaulPpuBxLXKBxY7b48NqoawFLkMvOq1qy",
     "createdAt": "2025-12-08T15:18:22.449Z"
+  },
+  {
+    "id": 1765656330102,
+    "name": "Shruti",
+    "mobile": "34567890",
+    "email": "shuti@gmail,com",
+    "gender": "female",
+    "age": "45",
+    "address": {
+      "house": "022",
+      "street": "rerere",
+      "locality": "terter",
+      "landmark": "uioiio",
+      "pincode": "234",
+      "city": "vfr",
+      "state": "sdfg",
+      "country": "yuio"
+    },
+    "aadhar": "567567567",
+    "passwordHash": "$2b$10$DvY1xTvLlr43zuBJCvlO2OXs0v.7V3Hnk0E1zy0Pj5lUAUTI9dn5.",
+    "createdAt": "2025-12-13T20:05:30.102Z"
+  },
+  {
+    "id": 1765656548959,
+    "name": "Shrutii",
+    "mobile": "3456789",
+    "email": "shuti6@gmail,com",
+    "gender": "female",
+    "age": "45",
+    "address": {
+      "house": "020",
+      "street": "rererere",
+      "locality": "terterter",
+      "landmark": "uioiioiio",
+      "pincode": "234",
+      "city": "vfrvfr",
+      "state": "sdfgji",
+      "country": "yuioko"
+    },
+    "aadhar": "567567567567",
+    "passwordHash": "$2b$10$DLLIuA2GG/peqqKByG/rZeKg9Rrahe7ka5d23Ac7.zNnHsyQ5znra",
+    "createdAt": "2025-12-13T20:09:08.959Z"
+  },
+  {
+    "id": 1765726146948,
+    "name": "shruti",
+    "mobile": "78",
+    "email": "abcs.gmail.com",
+    "gender": "female",
+    "age": "14",
+    "address": {
+      "house": "00",
+      "street": "00",
+      "locality": "00",
+      "landmark": "00",
+      "pincode": "00",
+      "city": "00",
+      "state": "000",
+      "country": "00"
+    },
+    "aadhar": "125",
+    "passwordHash": "$2b$10$lgsBVOzp82xUS8uSS2ThEOlPrwHSwUrbJP/xi0banhsHeuT3Yl9yW",
+    "createdAt": "2025-12-14T15:29:06.948Z"
   }
 ]
