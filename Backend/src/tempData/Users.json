@@ -63,6 +63,7 @@
     "createdAt": "2025-12-08T15:18:22.449Z"
   },
   {
+<<<<<<< HEAD
     "id": 1765656330102,
     "name": "Shruti",
     "mobile": "34567890",
@@ -124,5 +125,68 @@
     "aadhar": "125",
     "passwordHash": "$2b$10$lgsBVOzp82xUS8uSS2ThEOlPrwHSwUrbJP/xi0banhsHeuT3Yl9yW",
     "createdAt": "2025-12-14T15:29:06.948Z"
+=======
+    "id": 1765718655237,
+    "name": "Abhishek",
+    "mobile": "8329374228",
+    "email": "test@123.com",
+    "gender": "male",
+    "age": "25",
+    "address": {
+      "house": "q",
+      "street": "Warje Jakat Naka 411058",
+      "locality": "dwq",
+      "landmark": "hd",
+      "pincode": "411058",
+      "city": "Pune",
+      "state": "Maharashtra",
+      "country": "India"
+    },
+    "aadhar": "5555213522635",
+    "passwordHash": "$2b$10$lFG04q3DWddzUrzf9AFEoeoo/fUVOCZI5GQXsojzZnyoN1Cnmu4Jm",
+    "createdAt": "2025-12-14T13:24:15.237Z"
+  },
+  {
+    "id": 1765724405065,
+    "name": "test ",
+    "mobile": "553962513",
+    "email": "test@345.com",
+    "gender": "male ",
+    "age": "23",
+    "address": {
+      "house": "xyz",
+      "street": "Warje Jakat Naka 411058",
+      "locality": "warje",
+      "landmark": "street",
+      "pincode": "411058",
+      "city": "Pune",
+      "state": "Maharashtra",
+      "country": "India"
+    },
+    "aadhar": "598531191555",
+    "passwordHash": "$2b$10$qrWIEVRdbF77vncjg8WVzODTrXqL3xHxk8ROV9wj5Kp01KIJKXT2K",
+    "createdAt": "2025-12-14T15:00:05.065Z"
+  },
+  {
+    "id": 1765727187090,
+    "name": "ab",
+    "mobile": "55",
+    "email": "testtt123@gmail.com",
+    "gender": "male ",
+    "age": "32",
+    "address": {
+      "house": "dd",
+      "street": "ssaa",
+      "locality": "aa",
+      "landmark": "cc",
+      "pincode": "110055",
+      "city": "rf",
+      "state": "cv",
+      "country": "rf"
+    },
+    "aadhar": "23421342",
+    "passwordHash": "$2b$10$S1xF2R5ibuU780L64W9VSuRdEspPVeRIvMijQ7zz9sDyqvMtte5V.",
+    "createdAt": "2025-12-14T15:46:27.090Z"
+>>>>>>> 0841ae4 (Update backend, frontend, and database schema)
   }
 ]

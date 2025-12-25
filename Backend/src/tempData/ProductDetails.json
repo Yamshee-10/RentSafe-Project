@@ -54,5 +54,21 @@
     "minRentalPeriod": "4",
     "description": "good",
     "imageUrl": "/uploads/1764273768190.png"
+  },
+  {
+    "id": 1765716959381,
+    "productName": "Test",
+    "priceRange": "2134",
+    "minRentalPeriod": "1",
+    "description": "TEst new\r\n",
+    "imageUrl": "/uploads/1765716959363.png"
+  },
+  {
+    "id": 1765717807902,
+    "productName": "TEst100",
+    "priceRange": "90000",
+    "minRentalPeriod": "9",
+    "description": "Final test",
+    "imageUrl": "/uploads/1765717807890.png"
   }
 ]
