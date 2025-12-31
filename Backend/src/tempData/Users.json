@@ -125,6 +125,7 @@
     "aadhar": "125",
     "passwordHash": "$2b$10$lgsBVOzp82xUS8uSS2ThEOlPrwHSwUrbJP/xi0banhsHeuT3Yl9yW",
     "createdAt": "2025-12-14T15:29:06.948Z"
+<<<<<<< Updated upstream
 =======
     "id": 1765718655237,
     "name": "Abhishek",
@@ -188,5 +189,49 @@
     "passwordHash": "$2b$10$S1xF2R5ibuU780L64W9VSuRdEspPVeRIvMijQ7zz9sDyqvMtte5V.",
     "createdAt": "2025-12-14T15:46:27.090Z"
 >>>>>>> 0841ae4 (Update backend, frontend, and database schema)
+=======
+  },
+  {
+    "id": 1766308858527,
+    "name": "shrutir",
+    "mobile": "74",
+    "email": "abcds.gmail.com",
+    "gender": "female",
+    "age": "13",
+    "address": {
+      "house": "00",
+      "street": "000",
+      "locality": "000",
+      "landmark": "000",
+      "pincode": "0",
+      "city": "000",
+      "state": "000",
+      "country": "000"
+    },
+    "aadhar": "128",
+    "passwordHash": "$2b$10$6vrnQWchNmSdjNaPP3ebsemMewsIgon1nZv6Jbkf3sdnh9aSgJzBa",
+    "createdAt": "2025-12-21T09:20:58.527Z"
+  },
+  {
+    "id": 1766323474548,
+    "name": "TOM",
+    "mobile": "5050",
+    "email": "tom123@gmail.com",
+    "gender": "Male",
+    "age": "41",
+    "address": {
+      "house": "122",
+      "street": "123",
+      "locality": "12444",
+      "landmark": "125",
+      "pincode": "126",
+      "city": "127",
+      "state": "129",
+      "country": "128"
+    },
+    "aadhar": "5689",
+    "passwordHash": "$2b$10$MvpoTBKjYcWM/SEgSzCife.TNjoBnaNjhem2pbPsLy9ihbUH9vN/G",
+    "createdAt": "2025-12-21T13:24:34.548Z"
+>>>>>>> Stashed changes
   }
 ]

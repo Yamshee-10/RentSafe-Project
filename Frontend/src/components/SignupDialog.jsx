@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import "./SignupDialog.css";
 
-export default function SignupDialog({ open, onClose }) {
+export default function SignupDialog({ open, onClose, setUser, setJustLoggedIn }) {
   if (!open) return null;
 
   const [form, setForm] = useState({
@@ -77,10 +77,18 @@ export default function SignupDialog({ open, onClose }) {
       if (!res.ok) {
         console.error("Register error:", data);
         alert(data.message || "Registration failed");
-      } else {
-        alert("Registration successful!");
-        onClose(); // close dialog
+      } 
+      else {
+        localStorage.setItem("rentsafe_user", JSON.stringify(data.user));
+        setUser(data.user);
+        setJustLoggedIn(true);
+        onClose();
+        alert("Registration successful");
       }
+
+        // alert("Registration successful!");
+        // onClose(); // close dialog
+      
     } catch (e) {
       console.error(e);
       alert("Failed to register. See console for details.");

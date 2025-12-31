@@ -5,13 +5,48 @@
 // }
 import React, { useState } from "react";
 import "./Login.css";
-
-export default function Login({ open, onClose }) {
+export default function Login({ open, onClose, setUser, setJustLoggedIn }) {
   if (!open) return null;
 
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+
+
+//   const handleLogin = async (e) => {
+//   e.preventDefault();
+//   setLoading(true);
+
+//   try {
+//     const res = await fetch("http://localhost:5000/api/auth/login", {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify({ identifier, password }),
+//     });
+
+//     let data = {};
+//     const text = await res.text(); // 👈 SAFE read
+
+//     if (text) {
+//       data = JSON.parse(text);
+//     }
+
+//     if (!res.ok) {
+//       alert(data.message || "Login failed");
+//       return;
+//     }
+
+//     // ✅ SUCCESS
+//     localStorage.setItem("rentsafe_user", JSON.stringify(data.user));
+//     onClose();
+
+//   } catch (err) {
+//     console.error("Login fetch error:", err);
+//     // ❌ NO alert here — it’s not a real failure
+//   } finally {
+//     setLoading(false);
+//   }
+// };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -29,11 +64,14 @@ export default function Login({ open, onClose }) {
       if (!res.ok) {
         alert(data.message || "Login failed");
       } else {
-        // Store user session
-        localStorage.setItem("rentsafe_user", JSON.stringify(data.user));
-        alert("Login successful!");
-        onClose();
-      }
+        
+            localStorage.setItem("rentsafe_user", JSON.stringify(data.user));
+          setUser(data.user);        // Navbar sees logged-in user
+          setJustLoggedIn(true);     // trigger welcome toast
+          onClose();
+        }
+
+      
     } catch (err) {
       console.error(err);
       alert("Login error");
@@ -47,21 +85,18 @@ export default function Login({ open, onClose }) {
       <div className="login-dialog">
         <button className="login-close" onClick={onClose}>×</button>
         <h2 className="login-title">Login to RentSafe</h2>
-
         <form onSubmit={handleLogin}>
           <input
             placeholder="Email or Mobile number"
             value={identifier}
             onChange={(e) => setIdentifier(e.target.value)}
           />
-
           <input
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-
           <button className="login-primary" disabled={loading}>
             {loading ? "Logging in..." : "Login"}
           </button>
@@ -70,3 +105,72 @@ export default function Login({ open, onClose }) {
     </div>
   );
 }
+
+
+
+
+
+// export default function Login({ open, onClose }) {
+//   if (!open) return null;
+
+//   const [identifier, setIdentifier] = useState("");
+//   const [password, setPassword] = useState("");
+//   const [loading, setLoading] = useState(false);
+
+//   const handleLogin = async (e) => {
+//     e.preventDefault();
+//     setLoading(true);
+
+//     try {
+//       const res = await fetch("http://localhost:5000/api/auth/login", {
+//         method: "POST",
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify({ identifier, password }),
+//       });
+
+//       const data = await res.json();
+
+//       if (!res.ok) {
+//         alert(data.message || "Login failed");
+//       } else {
+//         // Store user session
+//         localStorage.setItem("rentsafe_user", JSON.stringify(data.user));
+//         alert("Login successful!");
+//         onClose();
+//       }
+//     } catch (err) {
+//       console.error(err);
+//       alert("Login error");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   return (
+//     <div className="login-overlay">
+//       <div className="login-dialog">
+//         <button className="login-close" onClick={onClose}>×</button>
+//         <h2 className="login-title">Login to RentSafe</h2>
+
+//         <form onSubmit={handleLogin}>
+//           <input
+//             placeholder="Email or Mobile number"
+//             value={identifier}
+//             onChange={(e) => setIdentifier(e.target.value)}
+//           />
+
+//           <input
+//             type="password"
+//             placeholder="Password"
+//             value={password}
+//             onChange={(e) => setPassword(e.target.value)}
+//           />
+
+//           <button className="login-primary" disabled={loading}>
+//             {loading ? "Logging in..." : "Login"}
+//           </button>
+//         </form>
+//       </div>
+//     </div>
+//   );
+// }
