@@ -11,3 +11,5 @@ build/
 # System / editor files
 .DS_Store
 Thumbs.db
+# Backend temporary/mock data
+Backend/src/tempData/
