@@ -17,6 +17,7 @@
     "@emotion/styled": "^11.14.1",
     "@mui/icons-material": "^7.3.5",
     "@mui/material": "^7.3.5",
+    "axios": "^1.13.2",
     "dangerous-html": "0.1.13",
     "next": "^12.1.10",
     "prop-types": "15.7.2",

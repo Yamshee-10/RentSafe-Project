@@ -1,0 +1,117 @@
+/* ===== Account Page Wrapper ===== */
+.account-page {
+  width: 100%;
+  min-height: 100vh;
+  padding: 60px 80px;
+  background: #fafafa;
+  font-family: "Poppins", sans-serif;
+}
+
+/* ===== Header ===== */
+.account-header {
+  margin-bottom: 50px;
+}
+
+.account-header h1 {
+  font-size: 40px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #111;
+}
+
+.account-header p {
+  font-size: 16px;
+  color: #221f1f;
+}
+
+/* ===== Back Button ===== */
+.back-home-btn {
+  background: none;
+  border: none;
+  color: #ef3b5a;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 16px;
+  padding: 0;
+}
+
+.back-home-btn:hover {
+  text-decoration: underline;
+}
+
+/* ===== Grid Layout ===== */
+.account-grid {
+  max-width: 1200px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+/* Center last card */
+.account-grid > :last-child {
+  grid-column: 2 / span 1;
+}
+
+/* ===== Card Styling ===== */
+.account-card {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 18px;
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.account-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 24px 55px rgba(0, 0, 0, 0.14);
+}
+
+.account-card h3 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.account-card p {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* ===== Action Text ===== */
+.card-action {
+  margin-top: 16px;
+  display: inline-block;
+  color: #ef3b5a;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 1000px) {
+  .account-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .account-grid > :last-child {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 600px) {
+  .account-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .account-grid > :last-child {
+    grid-column: span 1;
+  }
+
+  .account-page {
+    padding: 40px 24px;
+  }
+}
+

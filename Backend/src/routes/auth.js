@@ -1,119 +1,275 @@
 // Backend/src/routes/auth.js
+
+// Backend/src/routes/auth.js
 const express = require("express");
 const router = express.Router();
-const path = require("path");
-const fs = require("fs");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
+const { Op } = require("sequelize");
+const User = require("../models/User");
 
-// path to JSON storage
-const jsonPath = path.join(__dirname, "..", "tempData", "Users.json");
-
-// ensure file exists
-function ensureFile() {
-  const dir = path.dirname(jsonPath);
-  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-  if (!fs.existsSync(jsonPath)) fs.writeFileSync(jsonPath, JSON.stringify([], null, 2));
-}
-
-// POST /api/auth/register
+/* ================= REGISTER ================= */
 router.post("/register", async (req, res) => {
   try {
-    ensureFile();
+    const { name, email, password, aadhar, mobile, address, gender, age } = req.body;
 
-    const {
+    if (!name || !email || !password || !aadhar || !mobile || !address) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    const existingUser = await User.findOne({
+      where: { [Op.or]: [{ email }, { aadhar }] },
+    });
+
+    if (existingUser) {
+      return res.status(400).json({ message: "Email or Aadhar already exists" });
+    }
+
+    const hashedPassword = bcrypt.hashSync(password, 10);
+
+    const newUser = await User.create({
       name,
-      mobile,
       email,
+      phone: mobile,
       gender,
       age,
-      address = {},
       aadhar,
-      password,
-    } = req.body;
+      address: JSON.stringify(address),
+      password_hash: hashedPassword,
+    });
 
-    // POST /api/auth/login
+    const safeUser = {
+      ...newUser.toJSON(),
+      address: JSON.parse(newUser.address),
+    };
+    delete safeUser.password_hash;
+
+    res.status(201).json({
+      message: "User registered successfully!",
+      user: safeUser,
+    });
+  } catch (err) {
+    console.error("Signup error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+/* ================= LOGIN ================= */
 router.post("/login", async (req, res) => {
   try {
     const { identifier, password } = req.body;
+
     if (!identifier || !password) {
-      return res.status(400).json({ message: "Identifier and password required" });
+      return res.status(400).json({ message: "All fields are required" });
     }
 
-    ensureFile();
-    const raw = fs.readFileSync(jsonPath, "utf-8");
-    const users = raw ? JSON.parse(raw) : [];
-
-    const user = users.find(
-      u => u.email === identifier || u.mobile === identifier
-    );
+    const user = await User.findOne({
+      where: {
+        [Op.or]: [{ email: identifier }, { phone: identifier }],
+      },
+    });
 
     if (!user) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    const isMatch = await bcrypt.compare(password, user.passwordHash);
+    const isMatch = await bcrypt.compare(password, user.password_hash);
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    // Do NOT send password hash
-    const safeUser = { ...user };
-    delete safeUser.passwordHash;
+    // ✅ STORE SESSION
+    req.session.userId = user.user_id;
 
-    res.json({
+    const safeUser = {
+      ...user.toJSON(),
+      address: user.address ? JSON.parse(user.address) : null,
+    };
+    delete safeUser.password_hash;
+
+    res.status(200).json({
       message: "Login successful",
-      user: safeUser
+      user: safeUser,
     });
-
   } catch (err) {
     console.error("Login error:", err);
     res.status(500).json({ message: "Server error" });
   }
 });
 
-    // basic validation
-    if (!name || !mobile || !email || !password) {
-      return res.status(400).json({ message: "name, mobile, email, password are required" });
+/* ================= RESTORE SESSION ================= */
+router.get("/me", async (req, res) => {
+  try {
+    if (!req.session.userId) {
+      return res.status(401).json({ message: "Not authenticated" });
     }
 
-    // load existing users
-    const raw = fs.readFileSync(jsonPath, "utf-8");
-    const users = raw ? JSON.parse(raw) : [];
+    const user = await User.findByPk(req.session.userId, {
+      attributes: { exclude: ["password_hash"] },
+    });
 
-    // avoid duplicate email or mobile
-    if (users.some(u => u.email === email || u.mobile === mobile)) {
-      return res.status(400).json({ message: "User with same email or mobile already exists" });
+    if (!user) {
+      return res.status(401).json({ message: "User not found" });
     }
 
-    // hash password (recommended)
-    const salt = await bcrypt.genSalt(10);
-    const hashed = await bcrypt.hash(password, salt);
-
-    const newUser = {
-      id: Date.now(),
-      name,
-      mobile,
-      email,
-      gender,
-      age,
-      address,
-      aadhar,
-      passwordHash: hashed,
-      createdAt: new Date().toISOString(),
+    const safeUser = {
+      ...user.toJSON(),
+      address: user.address ? JSON.parse(user.address) : null,
     };
 
-    users.push(newUser);
-    fs.writeFileSync(jsonPath, JSON.stringify(users, null, 2));
-
-    // do not return sensitive info
-    const safeUser = { ...newUser };
-    delete safeUser.passwordHash;
-    res.status(201).json({ message: "User created", user: safeUser });
+    res.status(200).json({ user: safeUser });
   } catch (err) {
-    console.error("Register error:", err);
-    res.status(500).json({ message: "Server error", error: err.message });
+    console.error("Session check error:", err);
+    res.status(500).json({ message: "Server error" });
   }
+});
+
+/* ================= LOGOUT ================= */
+router.post("/logout", (req, res) => {
+  req.session.destroy(() => {
+    res.clearCookie("rentsafe.sid");
+    res.status(200).json({ message: "Logged out" });
+  });
 });
 
 module.exports = router;
 
+// // Backend/src/routes/auth.js
+// const express = require("express");
+// const router = express.Router(); // ✅ THIS LINE WAS MISSING
+// const bcrypt = require("bcrypt");
+// const { Op } = require("sequelize");
+// const User = require("../models/User");
+
+
+// // POST /api/auth/register
+// router.post("/register", async (req, res) => {
+//   try {
+//     const { name, email, password, aadhar, mobile, address, gender, age } = req.body;
+
+//     if (!name || !email || !password || !aadhar || !mobile || !address) {
+//       return res.status(400).json({ message: "All fields are required" });
+//     }
+
+//     const existingUser = await User.findOne({
+//       where: {
+//         [Op.or]: [{ email }, { aadhar }],
+//       },
+//     });
+
+//     if (existingUser) {
+//       return res.status(400).json({ message: "Email or Aadhar already exists" });
+//     }
+
+//     const hashedPassword = bcrypt.hashSync(password, 10);
+
+//     const newUser = await User.create({
+//       name,
+//       email,
+//       phone: mobile,
+//       gender,
+//       age,
+//       aadhar,
+//       address: JSON.stringify(address), // ✅ stringify
+//       password_hash: hashedPassword,
+//     });
+
+//     const safeUser = {
+//       ...newUser.toJSON(),
+//       address: JSON.parse(newUser.address), // ✅ parse back
+//     };
+
+//     delete safeUser.password_hash;
+
+//     res.status(201).json({
+//       message: "User registered successfully!",
+//       user: safeUser,
+//     });
+//   } catch (err) {
+//     console.error("Signup error:", err);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// });
+// // POST /api/auth/login
+// router.post("/login", async (req, res) => {
+//   try {
+//     const { identifier, password } = req.body;
+
+//     if (!identifier || !password) {
+//       return res.status(400).json({ message: "All fields are required" });
+//     }
+
+//     // Find user by email OR phone
+//     const user = await User.findOne({
+//       where: {
+//         [Op.or]: [
+//           { email: identifier },
+//           { phone: identifier },
+//         ],
+//       },
+//     });
+
+//     if (!user) {
+//       return res.status(401).json({ message: "Invalid credentials" });
+//     }
+
+//     const isMatch = await bcrypt.compare(password, user.password_hash);
+
+//     if (!isMatch) {
+//       return res.status(401).json({ message: "Invalid credentials" });
+//     }
+
+//     // Safe user object
+//     const safeUser = {
+//       ...user.toJSON(),
+//       address: user.address ? JSON.parse(user.address) : null,
+//     };
+
+//     delete safeUser.password_hash;
+//     // ✅ store user id in session
+//       req.session.userId = user.user_id;
+
+//       res.status(200).json({
+//         message: "Login successful",
+//         user: safeUser,
+//       });
+
+//       // GET /api/auth/me
+//       router.get("/me", async (req, res) => {
+//         try {
+//           if (!req.session.userId) {
+//             return res.status(401).json({ message: "Not authenticated" });
+//           }
+
+//           const user = await User.findByPk(req.session.userId);
+
+//           if (!user) {
+//             return res.status(401).json({ message: "User not found" });
+//           }
+
+//           const safeUser = {
+//             ...user.toJSON(),
+//             address: user.address ? JSON.parse(user.address) : null,
+//           };
+
+//           delete safeUser.password_hash;
+
+//           res.status(200).json({ user: safeUser });
+//         } catch (err) {
+//           console.error("Session check error:", err);
+//           res.status(500).json({ message: "Server error" });
+//         }
+//       });
+
+
+//     // res.status(200).json({
+//     //   message: "Login successful",
+//     //   user: safeUser,
+//     // });
+//   } catch (err) {
+//     console.error("Login error:", err);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// });
+
+
+// module.exports = router; 

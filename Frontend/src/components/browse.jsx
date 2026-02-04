@@ -162,18 +162,6 @@ export default function Browse() {
             >
             Search
             </button>
-
-
-            {/* <button
-              className="browse-search-btn"
-              onClick={() => {
-                // temporary action: for now we just console.log; later you can route to results page
-                console.log("Search clicked for:", query);
-                alert(`Searching for: "${query}" (demo)`);
-              }}
-            >
-              Search
-            </button> */}
             <button
               className="browse-close-btn"
               onClick={() => {

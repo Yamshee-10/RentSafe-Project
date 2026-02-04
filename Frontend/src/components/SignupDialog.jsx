@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import "./SignupDialog.css";
 
-export default function SignupDialog({ open, onClose, setUser, setJustLoggedIn }) {
+export default function SignupDialog({ open, onClose, setUser}) {
   if (!open) return null;
 
   const [form, setForm] = useState({
@@ -81,7 +81,7 @@ export default function SignupDialog({ open, onClose, setUser, setJustLoggedIn }
       else {
         localStorage.setItem("rentsafe_user", JSON.stringify(data.user));
         setUser(data.user);
-        setJustLoggedIn(true);
+        // setJustLoggedIn(true);
         onClose();
         alert("Registration successful");
       }
