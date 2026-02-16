@@ -124,14 +124,29 @@ router.get("/me", async (req, res) => {
 });
 
 /* ================= LOGOUT ================= */
+// router.post("/logout", (req, res) => {
+//   req.session.destroy(() => {
+//     res.clearCookie("rentsafe.sid");
+//     res.status(200).json({ message: "Logged out" });
+//   });
+// });
 router.post("/logout", (req, res) => {
-  req.session.destroy(() => {
-    res.clearCookie("rentsafe.sid");
-    res.status(200).json({ message: "Logged out" });
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).json({ message: "Logout failed" });
+    }
+
+    res.clearCookie("rentsafe.sid", {
+      path: "/",          // must match session config
+      sameSite: "lax",
+      secure: false,
+    });
+
+    return res.status(200).json({ message: "Logged out successfully" });
   });
 });
 
-module.exports = router;
+ module.exports = router;
 
 // // Backend/src/routes/auth.js
 // const express = require("express");

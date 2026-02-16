@@ -23,6 +23,7 @@ export default function SignupDialog({ open, onClose, setUser}) {
     password: "",
     confirmPassword: "",
   });
+  
   const [submitting, setSubmitting] = useState(false);
 
   const update = (key) => (e) =>

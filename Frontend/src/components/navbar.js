@@ -1,6 +1,3 @@
-// // src/components/navbar.js
-
-
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 // import { Link } from "react-router-dom";
@@ -8,31 +5,51 @@ import "./navbar.css";
 import SignupDialog from "./SignupDialog";
 import Login from "./Login";
 import { Link, useHistory } from "react-router-dom";
-
+import api from "../api/axios";
 const Navbar = (props) => {
-  const [signupOpen, setSignupOpen] = useState(false);
-  const [loginOpen, setLoginOpen] = useState(false);
-  const [user, setUser] = useState(null);
+  // const [signupOpen, setSignupOpen] = useState(false);
+  // const [loginOpen, setLoginOpen] = useState(false);
+  // const [user, setUser] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [justLoggedIn, setJustLoggedIn] = useState(false);
+  // const [justLoggedIn, setJustLoggedIn] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
   const history = useHistory(); //
   //  ONLY runs after login/signup
   useEffect(() => {
-    if (user) {
+    if (props.user) {
       setShowWelcome(true);
       const timer = setTimeout(() => {
         setShowWelcome(false);
       }, 4000);
       return () => clearTimeout(timer);
     }
-  }, [user]);
+  }, [props.user]);
+   
+  
+ 
+//   const handleLogout = () => {
+//   localStorage.removeItem("rentsafe_user");
+//   localStorage.removeItem("rentsafe_token");
+//   props.setUser(null);
+//   setDropdownOpen(false);
+// };
+  const handleLogout = async () => {
+  try {
+    await api.post("/auth/logout");
+    props.setUser(null);
+  } catch (err) {
+    console.error(" Logout failed",err);
+  }
+  
+  setDropdownOpen(false);
+};
 
-  const handleLogout = () => {
-    localStorage.removeItem("rentsafe_user");
-    setUser(null);
-    setDropdownOpen(false);
-  };
+  
+  // const openSignupFromLogin = () => {
+  //     setLoginOpen(false);
+  //     setSignupOpen(true);
+  // };
+
 
   return (
     <>
@@ -54,17 +71,17 @@ const Navbar = (props) => {
             </nav>
 
             <div className="navbar-buttons1">
-              {!user ? (
+              {!props.user ? (
                 <>
                   <button
-                    onClick={() => setLoginOpen(true)}
+                    onClick={() => props.setLoginOpen(true)}
                     className="navbar-action11 thq-button-filled thq-button-animated"
                   >
                     <span className="thq-body-small">Login</span>
                   </button>
 
                   <button
-                    onClick={() => setSignupOpen(true)}
+                    onClick={() => props.setSignupOpen(true)}
                     className="thq-button-outline"
                   >
                     Sign-Up
@@ -76,7 +93,7 @@ const Navbar = (props) => {
                     className="user-button thq-button-outline"
                     onClick={() => setDropdownOpen(!dropdownOpen)}
                   >
-                    {user.name}
+                    {props.user.name}
                   </button>
 
                   {dropdownOpen && (
@@ -94,7 +111,13 @@ const Navbar = (props) => {
                       >
                         Your Products
                       </Link>
-
+                      <Link
+                        to="/cart"
+                        className="dropdown-link"
+                        onClick={() => setDropdownOpen(false)}
+                      >
+                        Your Cart
+                      </Link>
                       <button className="dropdown-item logout" onClick={handleLogout}>
                         Logout
                       </button>
@@ -111,23 +134,31 @@ const Navbar = (props) => {
       {showWelcome && (
         <div className="welcome-overlay">
           <div className="welcome-message">
-            WELCOME {user?.name.toUpperCase()}
+            WELCOME {props.user?.name.toUpperCase()}
           </div>
         </div>
       )}
 
-      <Login
+      {/* <Login
         open={loginOpen}
         onClose={() => setLoginOpen(false)}
         setUser={setUser}
         setJustLoggedIn={setJustLoggedIn}
+      /> */}
+      {/* <Login
+        open={loginOpen}
+        onClose={() => setLoginOpen(false)}
+        setUser={setUser}
+        setJustLoggedIn={setJustLoggedIn}
+        openSignup={openSignupFromLogin}
       />
+
 
       <SignupDialog
         open={signupOpen}
         onClose={() => setSignupOpen(false)}
         setUser={setUser}
-      />
+      /> */}
     </>
   );
 };

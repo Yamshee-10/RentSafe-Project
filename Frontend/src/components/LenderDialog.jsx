@@ -14,7 +14,7 @@ import {
 import "./LenderDialog.css";
 
 const LenderDialog = ({ open, onClose }) => {
-  const videoRef = useRef(null);
+  const videoRef = useRef(null)
   const canvasRef = useRef(null);
 
   const [step, setStep] = useState(1);
@@ -67,9 +67,10 @@ const LenderDialog = ({ open, onClose }) => {
   };
 
   // -----------------------
-  // 🚀 SUBMIT PRODUCT
+  //  ADD PRODUCT
   // -----------------------
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
       // Convert Base64 image to a File
       const response = await fetch(image);

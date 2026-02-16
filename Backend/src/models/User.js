@@ -12,6 +12,7 @@ const User = sequelize.define(
       primaryKey: true,
       autoIncrement: true, // must match MySQL
     },
+    
 
     name: {
       type: DataTypes.STRING,
@@ -59,5 +60,8 @@ const User = sequelize.define(
     freezeTableName: true,  // don't pluralize
   }
 );
+User.removeAttribute('id');
+
+
 
 module.exports = User;

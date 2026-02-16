@@ -20,8 +20,21 @@ const Home = (props) => {
       <Helmet>
         <title>Spotless Hungry Crocodile</title>
       </Helmet>
-      <Navbar></Navbar>
+     
+      {/* <Navbar
+        setLoginOpen={props.openLogin}
+        setSignupOpen={() => {}}
+      /> */}
+      <Navbar
+        user={props.user}
+        setUser={props.setUser}
+        setLoginOpen={props.openLogin}
+        setSignupOpen={props.setSignupOpen}
+      />
+
       <Hero
+        user={props.user}
+        openLogin={props.openLogin}
         image8Src="https://images.unsplash.com/photo-1751833720827-b8f8138c96e0?ixid=M3w5MTMyMXwwfDF8YWxsfDE0fHx8fHx8fHwxNzUyMTA5MzA5fA&amp;ixlib=rb-4.1.0&amp;w=1500"
         image3Src="https://images.unsplash.com/photo-1751290741362-f0eea350cb61?ixid=M3w5MTMyMXwwfDF8YWxsfDN8fHx8fHx8fDE3NTIxMDkzMDl8&amp;ixlib=rb-4.1.0&amp;w=1500"
         image2Src="https://images.unsplash.com/photo-1751710953703-7e1597676e08?ixid=M3w5MTMyMXwwfDF8YWxsfDI0fHx8fHx8fHwxNzUyMTA5MzA5fA&amp;ixlib=rb-4.1.0&amp;w=1500"
