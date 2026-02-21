@@ -2,23 +2,23 @@
 
 A full-stack web application for peer-to-peer item rental management. Users can browse, rent, and manage rental requests for various items in their community.
 
-## 🌟 Features
+## Features
 
 - **User Authentication**: Secure login/signup with bcrypt password hashing
-- **Product Browsing**: Browse and search rental items with advanced filters
-- **Smart Cart System**: Add items to cart with dynamic pricing based on rental duration
-- **Minimum Rental Period**: Each item has customizable minimum rental duration (1-5 months)
-- **Dynamic Pricing**: Calculate rental costs based on duration (price per month ÷ 30 × rental days)
-- **Payment Integration**: Razorpay payment gateway for secure transactions
-- **Order Management**: Track rental orders and payment status
-- **User Dashboard**: View your rental history and active bookings
-- **Lender Dashboard**: Manage items you're lending to others
+- **Product Browsing**: Browse and search rental items with versatile filtering capabilities
+- **Shopping Cart**: Add items to cart with dynamic pricing based on rental duration
+- **Minimum Rental Period**: Each item enforces customizable minimum rental duration (1-5 months)
+- **Dynamic Pricing**: Calculates rental costs based on monthly rate and duration (price per month ÷ 30 × rental days)
+- **Payment Gateway**: Razorpay integration for secure online transactions
+- **Order Tracking**: Monitor rental orders and payment status in real-time
+- **User Dashboard**: View rental history and active bookings
+- **Lender Dashboard**: Manage items you are lending to others
 - **Session Management**: Persistent user sessions with MySQL session store
-- **Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices
+- **Responsive Design**: Fully responsive layout for desktop, tablet, and mobile devices
 
-## 🏗️ Architecture
+## System Architecture
 
-### Tech Stack
+### Technology Stack
 
 **Backend:**
 - Node.js + Express.js
@@ -34,7 +34,90 @@ A full-stack web application for peer-to-peer item rental management. Users can 
 - CSS3 (Flexbox/Grid)
 - Context API for state management
 
-## 📁 Project Structure
+### Architecture Diagram
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                                                                               │
+│                          RentSafe Architecture                               │
+│                                                                               │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                               │
+│  CLIENT LAYER (Port 3000)                                                    │
+│  ┌───────────────────────────────────────────────────────────────────┐      │
+│  │                     React.js Frontend                             │      │
+│  │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐            │      │
+│  │  │   Browse     │  │    Cart      │  │  Checkout    │            │      │
+│  │  │   Products   │  │  Management  │  │   Payment    │            │      │
+│  │  └──────────────┘  └──────────────┘  └──────────────┘            │      │
+│  │         │                │                    │                   │      │
+│  │         └────────────────┼────────────────────┘                   │      │
+│  │                          │                                        │      │
+│  │                    UserContext API                               │      │
+│  │                  (State Management)                              │      │
+│  └───────────────────────────────────────────────────────────────────┘      │
+│                              │                                               │
+│                        Axios HTTP Client                                    │
+│                              │                                               │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                              │                                               │
+│  API LAYER (Port 5000)       │                                               │
+│  ┌───────────────────────────┴─────────────────────────────────────┐       │
+│  │                    Express.js Backend                           │       │
+│  │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐          │       │
+│  │  │ Auth Routes  │  │ Product API  │  │ Payment API  │          │       │
+│  │  │ /api/auth    │  │ /api/products│  │ /api/payments│          │       │
+│  │  └──────────────┘  └──────────────┘  └──────────────┘          │       │
+│  │  ┌──────────────┐  ┌──────────────┐                            │       │
+│  │  │  Cart API    │  │ Your Items   │                            │       │
+│  │  │ /api/cart    │  │ /api/products/lent                        │       │
+│  │  └──────────────┘  └──────────────┘                            │       │
+│  │         │                │                    │                │       │
+│  │         └────────────────┼────────────────────┘                │       │
+│  │                          │                                      │       │
+│  │                Sequelize ORM Layer                             │       │
+│  └───────────────────────────────────────────────────────────────┘       │
+│                              │                                               │
+│                     Express Session Store                                   │
+│                              │                                               │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                              │                                               │
+│  DATABASE & SERVICES LAYER                                                  │
+│  ┌───────────────────────────┴─────────────────────────────────────┐       │
+│  │                                                                  │       │
+│  │  ┌─────────────────────┐  ┌──────────────────────┐             │       │
+│  │  │  Railway MySQL DB   │  │ Razorpay Gateway    │             │       │
+│  │  │                     │  │                      │             │       │
+│  │  │ - Users Table       │  │ - Order Creation    │             │       │
+│  │  │ - Products Table    │  │ - Payment Verification             │       │
+│  │  │ - Carts Table       │  │ - Signature Validation            │       │
+│  │  │ - Payments Table    │  │                      │             │       │
+│  │  │ - Sessions Table    │  │                      │             │       │
+│  │  └─────────────────────┘  └──────────────────────┘             │       │
+│  │                                                                  │       │
+│  │  ┌─────────────────────┐                                        │       │
+│  │  │  File Storage       │                                        │       │
+│  │  │  /Backend/uploads   │                                        │       │
+│  │  │  (Product Images)   │                                        │       │
+│  │  └─────────────────────┘                                        │       │
+│  │                                                                  │       │
+│  └───────────────────────────────────────────────────────────────┘       │
+│                                                                               │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Data Flow
+
+User Interaction:
+1. User browses products on React frontend (Port 3000)
+2. Frontend calls Express API endpoints (Port 3000 → Port 5000)
+3. Backend validates and processes requests with Sequelize models
+4. Data persisted in Railway MySQL database
+5. For payments: Backend communicates with Razorpay gateway
+6. Sessions managed via Express Session Store (linked to MySQL)
+7. Response sent back to frontend, UI updated via React Context
+
+## Project Structure
 
 ```
 RentSafe-Project/
@@ -89,7 +172,7 @@ RentSafe-Project/
 └── README.md
 ```
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -146,7 +229,7 @@ npm start
 
 Frontend will run on `http://localhost:3000`
 
-## 🗄️ Database Setup
+## Database Setup
 
 ### Option 1: Using Railway (Recommended)
 
@@ -196,7 +279,7 @@ cd Backend
 node seed.js
 ```
 
-## 📦 Sample Products
+## Sample Products
 
 The app comes with 12 pre-configured sample products:
 
@@ -215,7 +298,7 @@ The app comes with 12 pre-configured sample products:
 | Pressure Washer | ₹400 | 1 month |
 | Drone 4K | ₹3000 | 2 months |
 
-## 🔑 Key Features Explained
+## Key Features and Implementation
 
 ### Dynamic Pricing
 
@@ -249,7 +332,7 @@ Example: BlackBoard requires minimum 3 months (90 days)
 - Payment signature validation
 - Order tracking
 
-## 🔐 Environment Variables
+## Environment Configuration
 
 ### Backend (.env)
 
@@ -270,7 +353,7 @@ RAZORPAY_KEY_SECRET=xxxxx
 SUBSCRIPTION_AMOUNT=9900
 ```
 
-## 📱 API Endpoints
+## API Endpoints
 
 ### Authentication
 - `POST /api/auth/signup` - Register new user
@@ -296,7 +379,7 @@ SUBSCRIPTION_AMOUNT=9900
 ### Database
 - `POST /api/seed` - Seed sample products
 
-## 🎨 UI/UX Highlights
+## UI/UX Design
 
 - Clean, modern design with smooth animations
 - Responsive layout for all devices
@@ -306,7 +389,7 @@ SUBSCRIPTION_AMOUNT=9900
 - Product image support
 - Search and filter capabilities
 
-## 🧪 Testing the App
+## Testing the Application
 
 1. **Browse Items**
    - Go to `/browse-items`
@@ -328,7 +411,7 @@ SUBSCRIPTION_AMOUNT=9900
    - Check order history
    - Track rental status
 
-## 🐛 Troubleshooting
+## Troubleshooting Guide
 
 ### Backend Connection Issues
 - Verify Railway database credentials in `.env`
@@ -350,7 +433,7 @@ SUBSCRIPTION_AMOUNT=9900
 - Verify in item details page
 - Check database for correct values
 
-## 📚 Technologies Used
+## Technology Stack Summary
 
 - **Frontend**: React, Axios, React Router, CSS3
 - **Backend**: Node.js, Express, Sequelize ORM
@@ -359,7 +442,7 @@ SUBSCRIPTION_AMOUNT=9900
 - **Hosting**: Railway (Database), Local/Vercel (Frontend)
 - **Authentication**: Session-based with MySQL store
 
-## 🔄 Data Flow
+## Data Flow and Processing
 
 ```
 User Login
@@ -379,7 +462,7 @@ Order Created (in Database)
 Success Confirmation
 ```
 
-## 📈 Future Enhancements
+## Future Enhancements
 
 - [ ] Advanced search filters
 - [ ] User ratings and reviews
@@ -392,19 +475,19 @@ Success Confirmation
 - [ ] Wishlist feature
 - [ ] Admin panel
 
-## 👥 Team
+## Credits
 
 - **Developer**: Lavanya / Yamshee-10
 
-## 📄 License
+## License
 
 This project is open source and available under the MIT License.
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-## 📞 Support
+## Support and Issues
 
 For issues, questions, or suggestions, please open an issue on GitHub.
 
@@ -412,4 +495,5 @@ For issues, questions, or suggestions, please open an issue on GitHub.
 
 **Repository**: https://github.com/Yamshee-10/RentSafe-Project
 
-Made with ❤️ by the RentSafe Team
+Built by the RentSafe Team
+
