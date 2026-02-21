@@ -1,0 +1,551 @@
+.payment-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+  padding: 20px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.payment-dialog {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+  max-width: 500px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.payment-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 32px;
+  color: #ef3b5a;
+  cursor: pointer;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.payment-close:hover:not(:disabled) {
+  background: rgba(239, 59, 90, 0.1);
+  transform: rotate(90deg);
+}
+
+.payment-close:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.payment-header {
+  text-align: center;
+  padding: 32px 24px 16px 24px;
+  background: linear-gradient(135deg, #ef3b5a 0%, #d4224c 100%);
+  color: white;
+  border-radius: 16px 16px 0 0;
+}
+
+.payment-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  font-family: "Poppins", sans-serif;
+}
+
+.payment-subtitle {
+  font-size: 14px;
+  opacity: 0.95;
+  margin: 0;
+  font-weight: 500;
+}
+
+.payment-content {
+  padding: 28px 24px;
+}
+
+.subscription-card {
+  border: 2px solid #f5f5f5;
+  border-radius: 12px;
+  padding: 24px;
+  background: linear-gradient(135deg, #fafafa 0%, #ffffff 100%);
+  transition: all 0.3s ease;
+}
+
+.subscription-card:hover {
+  border-color: #ef3b5a;
+  box-shadow: 0 10px 30px rgba(239, 59, 90, 0.15);
+}
+
+.price-section {
+  text-align: center;
+  margin-bottom: 28px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.price-amount {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.currency {
+  font-size: 24px;
+  color: #ef3b5a;
+  font-weight: 600;
+}
+
+.price-amount .number {
+  font-size: 48px;
+  font-weight: 700;
+  color: #1b1b1b;
+  font-family: "Poppins", sans-serif;
+}
+
+.period {
+  font-size: 16px;
+  color: #666;
+  font-weight: 500;
+}
+
+.price-note {
+  font-size: 12px;
+  color: #999;
+  margin: 8px 0 0 0;
+  font-style: italic;
+}
+
+.benefits-list {
+  margin-bottom: 24px;
+}
+
+.benefits-list h3 {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1b1b1b;
+  margin: 0 0 16px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: "Poppins", sans-serif;
+}
+
+.benefits-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.benefits-list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+}
+
+.benefit-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: #e8f5e9;
+  border-radius: 50%;
+  color: #4caf50;
+  font-size: 14px;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.trust-badges {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background: white;
+  border: 1px solid #d4d4d4;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: #333;
+  transition: all 0.3s ease;
+}
+
+.badge:hover {
+  border-color: #ef3b5a;
+  background: rgba(239, 59, 90, 0.05);
+}
+
+.badge-icon {
+  font-size: 20px;
+}
+
+.payment-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 24px 24px 24px;
+}
+
+.payment-primary,
+.payment-secondary {
+  padding: 14px 20px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: "Poppins", sans-serif;
+  letter-spacing: 0.3px;
+}
+
+.payment-primary {
+  background: linear-gradient(135deg, #ef3b5a 0%, #d4224c 100%);
+  color: white;
+  box-shadow: 0 8px 20px rgba(239, 59, 90, 0.3);
+}
+
+.payment-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(239, 59, 90, 0.4);
+}
+
+.payment-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.payment-primary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.payment-secondary {
+  background: transparent;
+  border: 2px solid #ef3b5a;
+  color: #ef3b5a;
+}
+
+.payment-secondary:hover:not(:disabled) {
+  background: rgba(239, 59, 90, 0.08);
+}
+
+.payment-secondary:disabled {
+  opacity: 0.5;
+  border-color: #ccc;
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+.payment-footer {
+  text-align: center;
+  font-size: 13px;
+  color: #666;
+  padding: 0 24px 20px 24px;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Rental Product Information */
+.rental-product-info {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  align-items: flex-start;
+}
+
+.rental-product-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.rental-product-details {
+  flex: 1;
+}
+
+.rental-product-details h3 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #1b1b1b;
+}
+
+.rental-description {
+  margin: 0;
+  font-size: 13px;
+  color: #666;
+  line-height: 1.4;
+}
+
+/* Rental Details Table */
+.rental-details {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #e6e6e6;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.detail-row span:first-child {
+  font-weight: 500;
+  color: #666;
+}
+
+.detail-row strong {
+  color: #ef3b5a;
+  font-weight: 700;
+}
+
+.detail-row.total {
+  padding-top: 16px;
+  border-top: 2px solid #f0f0f0;
+  font-size: 16px;
+}
+
+.detail-row.total strong {
+  font-size: 18px;
+}
+
+/* Cart Items Summary */
+.cart-items-summary {
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.cart-items-summary h3 {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1b1b1b;
+  margin: 0 0 16px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.checkout-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  background: #fafafa;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+.checkout-item-image {
+  width: 60px;
+  height: 60px;
+  border-radius: 6px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.checkout-item-details {
+  flex: 1;
+}
+
+.checkout-item-details strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: #1b1b1b;
+  margin-bottom: 4px;
+}
+
+.checkout-item-details p {
+  margin: 0;
+  font-size: 12px;
+  color: #888;
+  font-weight: 500;
+}
+
+.checkout-item-price {
+  font-size: 14px;
+  font-weight: 700;
+  color: #ef3b5a;
+  min-width: 80px;
+  text-align: right;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .rental-product-info {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .rental-product-image {
+    width: 120px;
+    height: 120px;
+  }
+
+  .detail-row {
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .payment-dialog {
+    border-radius: 12px;
+    max-height: 95vh;
+  }
+
+  .payment-header {
+    padding: 24px 16px 12px 16px;
+  }
+
+  .payment-title {
+    font-size: 22px;
+  }
+
+  .payment-subtitle {
+    font-size: 13px;
+  }
+
+  .payment-content {
+    padding: 20px 16px;
+  }
+
+  .subscription-card {
+    padding: 16px;
+  }
+
+  .price-amount .number {
+    font-size: 40px;
+  }
+
+  .currency {
+    font-size: 20px;
+  }
+
+  .period {
+    font-size: 14px;
+  }
+
+  .benefits-list li {
+    font-size: 13px;
+  }
+
+  .trust-badges {
+    gap: 8px;
+  }
+
+  .badge {
+    padding: 8px;
+    font-size: 11px;
+  }
+
+  .badge-icon {
+    font-size: 18px;
+  }
+
+  .payment-actions {
+    padding: 0 16px 16px 16px;
+    gap: 10px;
+  }
+
+  .payment-primary,
+  .payment-secondary {
+    padding: 12px 16px;
+    font-size: 13px;
+  }
+
+  .payment-footer {
+    padding: 0 16px 16px 16px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 380px) {
+  .payment-overlay {
+    padding: 10px;
+  }
+
+  .payment-dialog {
+    border-radius: 10px;
+  }
+
+  .payment-header {
+    padding: 20px 12px 10px 12px;
+  }
+
+  .payment-title {
+    font-size: 20px;
+  }
+
+  .subscription-card {
+    padding: 12px;
+  }
+
+  .trust-badges {
+    grid-template-columns: 1fr;
+  }
+
+  .price-section {
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+  }
+}

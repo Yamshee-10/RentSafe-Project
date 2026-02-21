@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/db");
 
+
 const Product = sequelize.define("Product", {
   id: {
     type: DataTypes.INTEGER,
@@ -31,7 +32,14 @@ const Product = sequelize.define("Product", {
   imageUrl: {
     type: DataTypes.STRING,
     allowNull: false,
-  }
+  },
+  user_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+
 });
+
+
 
 module.exports = Product;

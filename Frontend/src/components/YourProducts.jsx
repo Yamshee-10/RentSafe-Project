@@ -1,28 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import "./YourProducts.css";
 
 const YourProducts = () => {
-  // Temporary mock data (replace with backend later)
-  const products = [
-    {
-      id: 1,
-      name: "DSLR Camera",
-      lentTo: "Rahul Sharma",
-      lendDate: "2026-01-05",
-      duration: "7 days",
-      rentReceived: "₹1500",
-      rentPending: "₹500",
-    },
-    {
-      id: 2,
-      name: "Electric Drill Machine",
-      lentTo: "Ananya Singh",
-      lendDate: "2026-01-10",
-      duration: "5 days",
-      rentReceived: "₹800",
-      rentPending: "₹0",
-    },
-  ];
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/api/products/lent1")
+      .then((res) => {
+        setProducts(res.data);
+      })
+      .catch((err) => console.error(err));
+  }, []);
+
+  const handleRequestReturn = async (productId) => {
+    try {
+      await axios.post(
+        `http://localhost:5000/api/products/request-return/${productId}`
+      );
+
+      alert("Return request sent successfully");
+    } catch (error) {
+      console.error("Return request error:", error);
+    }
+  };
 
   return (
     <div className="your-products-container">
@@ -31,22 +33,40 @@ const YourProducts = () => {
         Track and manage items you have lent to others
       </p>
 
-      <div className="your-products-grid">
-        {products.map((product) => (
-          <div key={product.id} className="your-product-card">
-            <h3>{product.name}</h3>
-            <p><strong>Lent To:</strong> {product.lentTo}</p>
-            <p><strong>Lend Date:</strong> {product.lendDate}</p>
-            <p><strong>Duration:</strong> {product.duration}</p>
-            <p><strong>Rent Received:</strong> {product.rentReceived}</p>
-            <p><strong>Rent Pending:</strong> {product.rentPending}</p>
+      {products.length === 0 ? (
+        <p className="empty-text">You haven't lent any products yet.</p>
+      ) : (
+        <div className="your-products-grid">
+          {products.map((product) => (
+            <div key={product.id} className="your-product-card">
+              <div className="product-image-wrapper">
+                <img
+                  src={`http://localhost:5000/uploads/${product.imageUrl}`}
+                  alt={product.productName}
+                />
+              </div>
 
-            <button className="request-return-btn">
-              Request Return
-            </button>
-          </div>
-        ))}
-      </div>
+              <div className="product-content">
+                <h3>{product.productName}</h3>
+                <p className="description">{product.description}</p>
+
+                <div className="product-meta">
+                  <span>₹{product.priceRange} / month</span>
+                  <span>Min: {product.minRentalPeriod} months</span>
+                </div>
+                <p>Lender: {product.User?.name}</p>
+
+                <button
+                  className="request-return-btn"
+                  onClick={() => handleRequestReturn(product.id)}
+                >
+                  Request Return
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

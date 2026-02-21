@@ -1,0 +1,120 @@
+import React, { createContext, useState, useEffect } from "react";
+import api from "../api/axios";
+
+// Create the context
+export const UserContext = createContext();
+
+// Create the provider component
+export const UserProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [cart, setCart] = useState([]);
+
+  // Check session on app load
+  useEffect(() => {
+    const checkSession = async () => {
+      try {
+        const response = await api.get("/auth/me");
+        setUser(response.data.user);
+      } catch (err) {
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkSession();
+  }, []);
+
+  // Load cart from localStorage
+  useEffect(() => {
+    const savedCart = localStorage.getItem("rentSafeCart");
+    if (savedCart) {
+      try {
+        setCart(JSON.parse(savedCart));
+      } catch (err) {
+        console.error("Failed to load cart:", err);
+      }
+    }
+  }, []);
+
+  // Save cart to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem("rentSafeCart", JSON.stringify(cart));
+  }, [cart]);
+
+  const addToCart = (product, rentalDays) => {
+    setCart((prevCart) => {
+      const existingItem = prevCart.find(item => item.id === product.id);
+      // Parse price - handle both pricePerMonth and priceRange
+      const price = parseFloat(product.pricePerMonth || product.priceRange || 0);
+      
+      if (existingItem) {
+        // Update quantity if product already in cart
+        return prevCart.map(item =>
+          item.id === product.id
+            ? { ...item, rentalDays, updatedAt: new Date().toISOString() }
+            : item
+        );
+      } else {
+        // Add new item to cart
+        return [
+          ...prevCart,
+          {
+            id: product.id,
+            productName: product.productName,
+            pricePerMonth: price,
+            minRentalPeriod: product.minRentalPeriod,
+            description: product.description,
+            image: product.image,
+            imageUrl: product.imageUrl,
+            rentalDays,
+            addedAt: new Date().toISOString(),
+          },
+        ];
+      }
+    });
+  };
+
+  const removeFromCart = (productId) => {
+    setCart((prevCart) => prevCart.filter(item => item.id !== productId));
+  };
+
+  const updateCartItemDays = (productId, rentalDays) => {
+    setCart((prevCart) =>
+      prevCart.map(item =>
+        item.id === productId ? { ...item, rentalDays } : item
+      )
+    );
+  };
+
+  const clearCart = () => {
+    setCart([]);
+  };
+
+  const value = {
+    user,
+    setUser,
+    loading,
+    cart,
+    addToCart,
+    removeFromCart,
+    updateCartItemDays,
+    clearCart,
+  };
+
+  return (
+    <UserContext.Provider value={value}>
+      {children}
+    </UserContext.Provider>
+  );
+};
+
+// Custom hook to use the context
+export const useUser = () => {
+  const context = React.useContext(UserContext);
+  if (!context) {
+    throw new Error("useUser must be used within UserProvider");
+  }
+  return context;
+};

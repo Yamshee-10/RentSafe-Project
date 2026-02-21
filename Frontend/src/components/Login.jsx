@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./Login.css";
 import api from "../api/axios";
 
-export default function Login({ open, onClose, setUser, setJustLoggedIn }) {
+export default function Login({ open, onClose, setUser, setJustLoggedIn, openSignup }) {
   if (!open) return null;
 
   const [identifier, setIdentifier] = useState("");
@@ -20,7 +20,12 @@ export default function Login({ open, onClose, setUser, setJustLoggedIn }) {
       });
 
       const data = res.data;
+       localStorage.setItem("rentsafe_user", JSON.stringify(data.user));
 
+   
+      if (data.token) {
+        localStorage.setItem("rentsafe_token", data.token);
+      }
       setUser(data.user);        // Navbar sees logged-in user
       setJustLoggedIn(true);     // trigger welcome toast
       onClose();
@@ -56,6 +61,16 @@ export default function Login({ open, onClose, setUser, setJustLoggedIn }) {
             {loading ? "Logging in..." : "Login"}
           </button>
         </form>
+        <div className="login-footer-text">
+          Don't have an account?{" "}
+          <span
+            className="login-signup-link"
+            onClick={openSignup}
+          >
+            Create one!
+          </span>
+        </div>
+
       </div>
     </div>
   );
