@@ -12,11 +12,11 @@ import {
   TextField
 } from "@mui/material";
 import "./LenderDialog.css";
-
+import { useHistory } from "react-router-dom";
 const LenderDialog = ({ open, onClose }) => {
   const videoRef = useRef(null)
   const canvasRef = useRef(null);
-
+  const history = useHistory();
   const [step, setStep] = useState(1);
   const [image, setImage] = useState(null);
 
@@ -88,13 +88,15 @@ const LenderDialog = ({ open, onClose }) => {
       const res = await fetch("http://localhost:5000/api/products", {
         method: "POST",
         body: formData,
+        // New change adding credentials
+        credentials: "include",
       });
 
       const data = await res.json();
       console.log("Product saved:", data);
 
       alert("Product submitted successfully!");
-
+      history.push("/products");
       // Reset dialog
       resetDialog();
 
@@ -245,17 +247,3 @@ const LenderDialog = ({ open, onClose }) => {
 };
 
 export default LenderDialog;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
