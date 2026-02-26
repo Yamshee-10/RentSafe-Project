@@ -51,7 +51,7 @@ const YourProducts = () => {
       console.error("Return request error:", error);
     }
   };
-}
+
   return (
     <div className="your-products-container">
       <h1 className="your-products-title">Your Products</h1>
@@ -98,5 +98,5 @@ const YourProducts = () => {
     </div>
   );
 
-
+};
 export default YourProducts;

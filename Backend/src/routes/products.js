@@ -49,6 +49,25 @@ const storage = multer.diskStorage({
       console.error(" DB INSERT ERROR:", err); 
       res.status(500).json({ error: "Failed to save product" }); 
     } 
+  });
+  // GET ALL PRODUCTS 
+  router.get("/", async (req, res) => {
+    try { 
+      const products = await Product.findAll({ 
+        include: [ 
+          { 
+            model: User, 
+            // changing right now
+            as: "User",
+            attributes: ["user_id", "name"], // make sure "name" matches your User column 
+          }, 
+        ], 
+      }); 
+      res.json(products); 
+    } catch (err) { 
+      console.error("FETCH ERROR:", err); 
+      res.status(500).json({ error: "Failed to fetch products" }); 
+    } 
   }); 
   // GET PRODUCTS LENT BY A SPECIFIC USER 
   router.get("/lent/:userId", async (req, res) => { 
@@ -88,26 +107,8 @@ const storage = multer.diskStorage({
             error: "Failed to fetch product" }); 
           } 
   }); 
-  // GET ALL PRODUCTS 
-  router.get("/", async (req, res) => {
-    try { 
-      const products = await Product.findAll({ 
-        include: [ 
-          { 
-            model: User, 
-            attributes: ["user_id", "name"], // make sure "name" matches your User column 
-          }, 
-        ], 
-      }); 
-      res.json(products); 
-    } catch (err) { 
-      console.error("FETCH ERROR:", err); 
-      res.status(500).json({ error: "Failed to fetch products" }); 
-    } 
-  }); 
-module.exports = router;
-
-  router.get("/my-products", async (req, res) => {
+   
+   router.get("/my-products", async (req, res) => {
   try {
     const products = await Product.findAll({
        where: { user_id: req.session.userId },
