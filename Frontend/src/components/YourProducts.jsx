@@ -4,20 +4,46 @@ import "./YourProducts.css";
 
 const YourProducts = () => {
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:5000/api/products/lent1")
-      .then((res) => {
-        setProducts(res.data);
-      })
-      .catch((err) => console.error(err));
+  const fetchUserAndProducts = async () => {
+    try {
+      // Get logged in user from session
+      const userRes = await axios.get(
+        "http://localhost:5000/api/auth/me",
+        { withCredentials: true }
+      );
+
+      // const loggedUser = userRes.data;
+      const loggedUser = userRes.data.user;
+
+      // Fetch lent products using user_id
+      const productRes = await axios.get(
+        `http://localhost:5000/api/products/lent/${loggedUser.user_id}`,
+        { withCredentials: true }
+      ); 
+
+      console.log("LENT PRODUCTS:", productRes.data);
+      setProducts(productRes.data);
+      setLoading(false);
+      
+    } catch (err) {
+      setLoading(false);
+      console.error("User not logged in or fetch failed:", err);
+    }
+  };
+
+    fetchUserAndProducts();
   }, []);
 
   const handleRequestReturn = async (productId) => {
     try {
       await axios.post(
-        `http://localhost:5000/api/products/request-return/${productId}`
+        // `http://localhost:5000/api/products/request-return/${productId}`
+        `http://localhost:5000/api/products/request-return/${productId}`,
+        {},
+        { withCredentials: true }
       );
 
       alert("Return request sent successfully");
@@ -25,7 +51,7 @@ const YourProducts = () => {
       console.error("Return request error:", error);
     }
   };
-
+}
   return (
     <div className="your-products-container">
       <h1 className="your-products-title">Your Products</h1>
@@ -33,7 +59,9 @@ const YourProducts = () => {
         Track and manage items you have lent to others
       </p>
 
-      {products.length === 0 ? (
+      {loading ? (
+        <h3 className="empty-text">Loading your products...</h3>
+      ) : products.length === 0 ? (
         <p className="empty-text">You haven't lent any products yet.</p>
       ) : (
         <div className="your-products-grid">
@@ -69,6 +97,6 @@ const YourProducts = () => {
       )}
     </div>
   );
-};
+
 
 export default YourProducts;

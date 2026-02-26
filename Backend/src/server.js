@@ -1,9 +1,15 @@
 
 // Backend/src/server.js
+// require('dotenv').config();
+require("dotenv").config({ override: true });
+console.log("DB HOST:", process.env.DB_HOST);
+console.log("DB NAME:", process.env.DB_NAME);
+
 const path = require("path");
 const express = require("express");
 const cors = require("cors");
 const session = require("express-session");
+
 
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 // const sequelize = require("./config/db");
@@ -80,30 +86,3 @@ sequelize
   .catch((err) => {
     console.error(" Database connection failed:", err);
   });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  

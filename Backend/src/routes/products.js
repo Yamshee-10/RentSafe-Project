@@ -22,6 +22,11 @@ const storage = multer.diskStorage({
       console.log("REQ BODY:", req.body); 
       console.log("REQ FILE:", req.file); 
       
+      // New Change here from 26-28
+      if (!req.session.userId) {
+        return res.status(401).json({ error: "Not authenticated" });
+      }
+
       if (!req.file) { 
         return res.status(400).json({ error: "Image is required" }); 
       } 
@@ -31,7 +36,9 @@ const storage = multer.diskStorage({
         minRentalPeriod: req.body.minRentalPeriod, 
         description: req.body.description, 
         imageUrl: req.file.filename, 
-        user_id: 1, 
+        user_id: req.session.userId,
+        // user_id: req.user.user_id,
+        // user_id: 1, 
       }); 
       res.status(201).json({ 
         message: "Product saved in MySQL successfully", 
@@ -52,7 +59,9 @@ const storage = multer.diskStorage({
         include: [ 
           { 
             model: User, 
-            attributes: ["id", "name"], 
+            //changing for now 
+            as: "User",
+            attributes: ["user_id", "name"], 
           },
         ], 
       }); 
@@ -98,7 +107,30 @@ const storage = multer.diskStorage({
   }); 
 module.exports = router;
 
+  router.get("/my-products", async (req, res) => {
+  try {
+    const products = await Product.findAll({
+       where: { user_id: req.session.userId },
+      // where: { user_id: req.user.user_id },
+      include: [
+        {
+          model: User,
+          //changing for now 
+          as: "User",
+          attributes: ["user_id", "name"],
+        },
+      ],
+    });
 
+    res.json(products);
+  } catch (err) {
+    console.error("FETCH MY PRODUCTS ERROR:", err);
+    res.status(500).json({ error: "Failed to fetch products" });
+  }
+});
+
+
+module.exports = router;
 // const express = require("express");
 // const router = express.Router();
 // const multer = require("multer");
@@ -243,3 +275,4 @@ module.exports = router;
 
 
 // module.exports = router;
+
