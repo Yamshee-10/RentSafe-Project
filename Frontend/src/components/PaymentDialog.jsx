@@ -13,6 +13,18 @@ export default function PaymentDialog({
   totalCost,
   onPaymentSuccess
 }) {
+
+  // Adding these two console.log to check if open is false or if user is undefined
+  console.log("PaymentDialog open:", open);
+  console.log("PaymentDialog user:", user);
+
+// adding new variables 22-25
+  const firstMonthTotal = cartItems.reduce((sum, item) => {
+    const pricePerMonth = Number(item.Product?.priceRange || 0);
+    return sum + pricePerMonth;
+  }, 0);
+
+
   if (!open || !user) return null;
 
   // Determine if this is cart checkout or single product rental
@@ -22,7 +34,9 @@ export default function PaymentDialog({
   let amount, description, paymentItems = [];
   
   if (isCartCheckout) {
-    amount = Math.round(totalCost * 100); // Amount in paise
+    // amount = Math.round(totalCost * 100); // Amount in paise
+    // chnaging from 31-36
+    amount = Math.round(firstMonthTotal * 100);
     description = `Cart Checkout - ${cartItems.length} item${cartItems.length !== 1 ? 's' : ''}`;
     paymentItems = cartItems;
   } else if (isRental && product) {
@@ -36,7 +50,9 @@ export default function PaymentDialog({
   const [loading, setLoading] = useState(false);
   const [paymentStarted, setPaymentStarted] = useState(false);
 
-  const handlePayment = async () => {
+  const handlePayment = async (e) => {
+    e.preventDefault();
+    console.log("HANDLE PAYMENT TRIGGERED");
     try {
       setLoading(true);
       setPaymentStarted(true);
@@ -48,9 +64,17 @@ export default function PaymentDialog({
       };
 
       if (isCartCheckout) {
+        // paymentData.cart_items = cartItems.map(item => ({
+        //   product_id: item.id,
+        //   rental_days: item.rentalDays,
+        // }));
+        // new code snippet 69-75
         paymentData.cart_items = cartItems.map(item => ({
           product_id: item.id,
-          rental_days: item.rentalDays,
+          total_months: item.selectedMonths,
+          paid_months: 1,
+          remaining_months: item.selectedMonths - 1,
+          price_per_month: Number(item.Product?.priceRange || 0)
         }));
       } else if (isRental && product) {
         paymentData.product_id = product.id;
@@ -199,17 +223,17 @@ export default function PaymentDialog({
                           className="checkout-item-image"
                         />
                       )}
-                      <div className="checkout-item-details">
+                      {/* <div className="checkout-item-details">
                         <strong>{item.productName}</strong>
                         <p>{item.rentalDays} days</p>
                       </div>
-                      <div className="checkout-item-price">₹{itemCost.toFixed(2)}</div>
+                      <div className="checkout-item-price">₹{itemCost.toFixed(2)}</div> */}
                     </div>
                   );
                 })}
               </div>
 
-              <div className="price-section">
+              {/* <div className="price-section">
                 <div className="price-amount">
                   <span className="currency">₹</span>
                   <span className="number">{totalCost.toFixed(0)}</span>
@@ -225,6 +249,25 @@ export default function PaymentDialog({
                 <div className="detail-row total">
                   <span>Total Amount:</span>
                   <strong>₹{totalCost.toFixed(2)}</strong>
+                </div>
+              </div> */}
+              {/* new code snippet 244-261*/}
+              <div className="price-section">
+                <div className="detail-row">
+                  <span>Total Contract Value:</span>
+                  <strong>₹{totalCost.toFixed(2)}</strong>
+                </div>
+
+                <div className="detail-row">
+                  <span>Pay Now (1st Month):</span>
+                  <strong>₹{firstMonthTotal.toFixed(2)}</strong>
+                </div>
+
+                <div className="detail-row total">
+                  <span>Remaining Balance:</span>
+                  <strong>
+                    ₹{(totalCost - firstMonthTotal).toFixed(2)}
+                  </strong>
                 </div>
               </div>
             </div>

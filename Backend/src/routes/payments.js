@@ -89,6 +89,9 @@ router.post("/verify", async (req, res) => {
     }
 
     console.log(`[PAYMENT] Signature verified successfully for order: ${razorpay_order_id}`);
+    //  Fetch Razorpay order details
+    // defining order
+    const order = await razorpay.orders.fetch(razorpay_order_id);
 
     // Find or create payment record
     let payment = await Payment.findOne({
@@ -99,18 +102,57 @@ router.post("/verify", async (req, res) => {
       // Payment is new
       const isRental = !!product_id;
       const description = isRental ? `Product Rental - Product #${product_id}` : "Monthly Subscription";
+      // new code snippet 106-126
+      // 🔥 Get rental details from frontend
+      const { cart_items = [] } = req.body;
+
+      // Calculate contract totals
+      const totalMonths = cart_items.reduce(
+        (sum, item) => sum + (item.total_months || 0),
+        0
+      );
+
+      const remainingMonths = cart_items.reduce(
+        (sum, item) => sum + (item.remaining_months || 0),
+        0
+      );
+
+      const totalAmount = cart_items.reduce(
+        (sum, item) =>
+          sum + (item.total_months * item.price_per_month * 100),
+        0
+      );
+
+      const remainingAmount = totalAmount - order.amount;
+      //   payment = await Payment.create({
+      //   user_id,
+      //   razorpay_order_id,
+      //   razorpay_payment_id,
+      //   razorpay_signature,
+      //   // amount: parseInt(razorpay_order_id), // Will be set from order details, new chnage of amount
+      //   amount: parseInt(order.amount),
+      //   status: "success",
+      //   currency: "INR",
+      //   description: description,
+      // });
+      
+      // changing the payment.create from aforementioned to following
 
       payment = await Payment.create({
         user_id,
         razorpay_order_id,
         razorpay_payment_id,
         razorpay_signature,
-        amount: parseInt(razorpay_order_id), // Will be set from order details
+        amount: order.amount,
+        total_months: totalMonths,
+        paid_months: 1,
+        remaining_months: remainingMonths,
+        total_amount: totalAmount,
+        remaining_amount: remainingAmount,
         status: "success",
         currency: "INR",
         description: description,
       });
-
       console.log(
         `[PAYMENT] Payment record created for user_id: ${user_id}, payment_id: ${payment.id}`
       );

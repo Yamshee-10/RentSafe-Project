@@ -58,6 +58,31 @@ const Payment = sequelize.define(
       allowNull: true,
       defaultValue: "Monthly Subscription",
     },
+    // new code snippet 62-85
+    total_months: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+
+    paid_months: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+
+    remaining_months: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+
+    total_amount: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+
+    remaining_amount: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
   },
   {
     tableName: "Payments",

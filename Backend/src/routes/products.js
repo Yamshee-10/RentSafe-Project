@@ -49,6 +49,7 @@ const storage = multer.diskStorage({
       console.error(" DB INSERT ERROR:", err); 
       res.status(500).json({ error: "Failed to save product" }); 
     } 
+    
   });
   // GET ALL PRODUCTS 
   router.get("/", async (req, res) => {

@@ -2,12 +2,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./cart.css";
+import PaymentDialog from "./PaymentDialog";
 
 export default function Cart() {
   const [items, setItems] = useState([]);
   const [selectedItems, setSelectedItems] = useState({});
-
-  // const [months, setMonths] = useState({});
+  const [paymentOpen, setPaymentOpen] = useState(false);
+  // adding selectedmonths variable
+  const [selectedMonths, setSelectedMonths] = useState({});
+  const user = JSON.parse(localStorage.getItem("rentsafe_user"));
 
   useEffect(() => {
     axios
@@ -15,13 +18,6 @@ export default function Cart() {
       .then((res) => {
         console.log(res.data);
         setItems(res.data);
-
-        // default 1 month for each item
-        // const initialMonths = {};
-        // res.data.forEach((item) => {
-        //   initialMonths[item.id] = 1;
-        // });
-        // setMonths(initialMonths);
       })
       .catch((err) => console.error(err));
   }, []);
@@ -45,25 +41,19 @@ export default function Cart() {
   };
 
 
-
-  // const handleMonthChange = (id, value) => {
-  //   setMonths((prev) => ({
-  //     ...prev,
-  //     [id]: Number(value),
-  //   }));
-  // };
-
-  // const total = items.reduce((sum, item) => {
-  //   const price = Number(item.Product?.priceRange || 0);
-  //   const selectedMonths = months[item.id] || 1;
-  //   return sum + price * selectedMonths;
-  // }, 0);
+    // const total = items.reduce((sum, item) => {
+    //   if (!selectedItems[item.id]) return sum;
+    //   const price = Number(item.Product?.priceRange || 0);
+    //   return sum + price;
+    // }, 0);
     const total = items.reduce((sum, item) => {
       if (!selectedItems[item.id]) return sum;
-      const price = Number(item.Product?.priceRange || 0);
-      return sum + price;
-    }, 0);
 
+      const pricePerMonth = Number(item.Product?.priceRange || 0);
+      const months = selectedMonths[item.id] || 1;
+
+      return sum + (pricePerMonth * months);
+    }, 0);
 
 
   return (
@@ -107,35 +97,34 @@ export default function Cart() {
                     <span>
                       Rental Period: {product?.minRentalPeriod} month(s) min
                     </span>
-                    <span>Rent per month: ₹{product?.priceRange}</span>
-                  </div>
-
-                  {/* <div className="cart-month-select">
-                    <label>Months:</label>
+                    {/* adding new snippet for dropdown from line no. 94-111 */}
                     <select
-                      value={months[item.id] || 1}
+                      value={selectedMonths[item.id] || 1}
                       onChange={(e) =>
-                        handleMonthChange(item.id, e.target.value)
+                        setSelectedMonths(prev => ({
+                          ...prev,
+                          [item.id]: Number(e.target.value)
+                        }))
                       }
                     >
-                      {[1, 2, 3, 4, 5, 6, 12].map((m) => (
-                        <option key={m} value={m}>
-                          {m}
+                      {Array.from(
+                        { length: product?.minRentalPeriod || 1 },
+                        (_, i) => i + 1
+                      ).map(month => (
+                        <option key={month} value={month}>
+                          {month} month{month > 1 ? "s" : ""}
                         </option>
                       ))}
                     </select>
-                  </div> */}
+                    <span>Rent per month: ₹{product?.priceRange}</span>
+                  </div>
+
                 </div>
 
                 <div className="cart-right">
                   <p className="cart-item-total">
                     ₹{Number(product?.priceRange || 0).toFixed(2)}
 
-                    {/* ₹
-                    {(
-                      Number(product?.priceRange || 0) *
-                      (months[item.id] || 1)
-                    ).toFixed(2)} */}
                   </p>
 
                   <button
@@ -155,13 +144,44 @@ export default function Cart() {
               Total: ₹{total.toFixed(2)}
             </div>
 
-            <button className="cart-checkout-btn">
+          {/* After connecting it with setPayemntOpen */}
+          <button 
+            className="cart-checkout-btn"
+            onClick={() => setPaymentOpen(true)}
+          >
+            Proceed to Payment
+          </button>
+
+          {/* Before connecting it with setPayemntOpen */}
+            {/* <button className="cart-checkout-btn">
               Proceed to Payment
-            </button>
+            </button> */}
           </div>
+
+          {/* <PaymentDialog
+            open={paymentOpen}
+            onClose={() => setPaymentOpen(false)}
+            user={user}
+            cartItems={items.filter(item => selectedItems[item.id])
+            }
+            totalCost={total}
+          /> */}
+          {/* modified payment props */}
+          <PaymentDialog
+            open={paymentOpen}
+            onClose={() => setPaymentOpen(false)}
+            user={user}
+            cartItems={items
+              .filter(item => selectedItems[item.id])
+              .map(item => ({
+                ...item,
+                selectedMonths: selectedMonths[item.id] || 1
+              }))
+            }
+            totalCost={total}
+          />
         </>
       )}
     </main>
   );
 }
-
