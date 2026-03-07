@@ -12,17 +12,11 @@ const session = require("express-session");
 
 
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
-// const sequelize = require("./config/db");
 const { sequelize, Cart, Product,User } = require("./models");
- //  ONE sequelize only
-// require("./models/User");
-// require("./models/Product");
-// require("./models/Cart");
-
 const authRoutes = require("./routes/auth");
 const productRoutes = require("./routes/products");
 const cartRoutes = require("./routes/cart");
-
+const subscriptionRoutes = require("./routes/subscription");
 
 
 const app = express();
@@ -69,6 +63,8 @@ app.use(
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/cart", cartRoutes);
+app.use("/api/subscription", subscriptionRoutes);
+
 /* =======================
    START SERVER
 ======================= */

@@ -53,6 +53,26 @@ const User = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    // adding new fileds for the razorpay susbscription
+    razorpay_customer_id: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+
+    razorpay_subscription_id: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+
+    auto_debit_enabled: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+
+    next_billing_date: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
   },
   {
     tableName: "Users",     // EXACT table name in MySQL

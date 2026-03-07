@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./PaymentDialog.css";
 import api from "../api/axios";
+import AutoDebitInfoDialog from "./AutoDebitInfoDialog";
 
 export default function PaymentDialog({ 
   open, 
@@ -13,7 +14,8 @@ export default function PaymentDialog({
   totalCost,
   onPaymentSuccess
 }) {
-
+ 
+ 
   // Adding these two console.log to check if open is false or if user is undefined
   console.log("PaymentDialog open:", open);
   console.log("PaymentDialog user:", user);
@@ -49,6 +51,7 @@ export default function PaymentDialog({
 
   const [loading, setLoading] = useState(false);
   const [paymentStarted, setPaymentStarted] = useState(false);
+  const [autoDebitOpen, setAutoDebitOpen] = useState(false);
 
   const handlePayment = async (e) => {
     e.preventDefault();
@@ -378,12 +381,19 @@ export default function PaymentDialog({
         </div>
 
         <div className="payment-actions">
-          <button
+          {/* <button
             className="payment-primary"
             onClick={handlePayment}
             disabled={loading}
           >
             {loading && paymentStarted ? "Processing..." : "💳 Pay with Razorpay"}
+          </button> */}
+          {/* adding auto-debit option */}
+           <button
+            className="payment-primary"
+            onClick={() => setAutoDebitOpen(true)}
+          >
+            💳 Proceed to Auto Debit
           </button>
           <button
             className="payment-secondary"
@@ -392,6 +402,42 @@ export default function PaymentDialog({
           >
             {isCartCheckout ? "Continue Shopping" : isRental ? "Cancel booking" : "Skip for now"}
           </button>
+          {/* adding auto-debit logic */}
+          <AutoDebitInfoDialog
+            open={autoDebitOpen}
+            onClose={() => setAutoDebitOpen(false)}
+            onContinue={async () => {
+              setAutoDebitOpen(false);
+
+              const response = await api.post("/subscription/create", {
+                user_id: user.user_id,
+                amount: amount,
+                total_months: 12
+              });
+
+              const { subscription_id, key_id } = response.data;
+
+              const options = {
+                key: key_id,
+                subscription_id: subscription_id,
+                name: "RentSafe",
+                description: "Rental Auto Debit Plan",
+                handler: function (response) {
+                  alert("Subscription activated successfully!");
+                  onClose();
+                },
+                prefill: {
+                  name: user.name,
+                  email: user.email,
+                  contact: user.phone,
+                },
+                theme: { color: "#ef3b5a" }
+              };
+
+              const razorpay = new window.Razorpay(options);
+              razorpay.open();
+            }}
+          />
         </div>
 
         <p className="payment-footer">
